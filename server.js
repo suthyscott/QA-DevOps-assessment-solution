@@ -35,9 +35,9 @@ app.get('/api/robots', (req, res) => {
     try {
         res.status(200).send(botsArr)
     } catch (error) {
+        rollbar.critical('could not find botsArr')
         console.log('ERROR GETTING BOTS', error)
         res.sendStatus(400)
-        rollbar.critical('could not find botsArr')
     }
 })
 
@@ -48,9 +48,9 @@ app.get('/api/robots/five', (req, res) => {
         let compDuo = shuffled.slice(6, 8)
         res.status(200).send({choices, compDuo})
     } catch (error) {
+        rollbar.error('Could not get five bots!')
         console.log('ERROR GETTING FIVE BOTS', error)
         res.sendStatus(400)
-        rollbar.error('Could not get five bots!')
     }
 })
 
@@ -78,13 +78,13 @@ app.post('/api/duel', (req, res) => {
             rollbar.debug('the computer won')
         } else {
             playerRecord.losses++
-            res.status(200).send('You won!')
             rollbar.info('Player won')
+            res.status(200).send('You won!')
         }
     } catch (error) {
         console.log('ERROR DUELING', error)
-        res.sendStatus(400)
         rollbar.warning("something went wrong with the duel")
+        res.sendStatus(400)
     }
 })
 
@@ -99,6 +99,7 @@ app.get('/api/player', (req, res) => {
 
 rollbar.errorHandler()
 const port = process.env.PORT || 3000
+rollbar.info(port)
 
 app.listen(port, () => {
   console.log(`Listening on port ${port}`)
