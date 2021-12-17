@@ -19,6 +19,7 @@ app.use(express.json())
 // app.use('/static', express.static(path.join(__dirname, 'public'))) --- to serve files statically
 
 app.get('/', (req, res) => {
+    console.log('hey there')
     res.sendFile(path.join(__dirname, '/public/index.html'))
     rollbar.info('html file served successfully!')
 })
@@ -55,6 +56,7 @@ app.get('/api/robots/five', (req, res) => {
 })
 
 app.post('/api/duel', (req, res) => {
+    console.log('Dueling pal')
     try {
         // getting the duos from the front end
         let {compDuo, playerDuo} = req.body
